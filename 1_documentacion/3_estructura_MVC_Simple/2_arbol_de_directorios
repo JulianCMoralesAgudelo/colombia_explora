@@ -1,0 +1,56 @@
+Descripción de carpetas y archivos
+1. Raíz
+
+index.php → Página principal, carga destinos y botón “Reservar”.
+
+login.php → Formulario de login.
+
+logout.php → Finaliza sesión.
+
+reserva.php → Formulario para hacer reservación.
+
+guardar.php → Recibe datos POST y guarda en MySQL.
+
+listar.php → Lista de reservaciones, con control por rol.
+
+db.php → Conexión a MySQL (host, usuario, password, nombre de BD).
+
+session.php → Manejo de sesión PHP (session_start(), validaciones de login).
+
+2. Controllers (opcional)
+
+Contienen la lógica de negocio: validar login, procesar reservaciones, manejar consultas a modelos.
+
+3. Models
+
+Representan cada entidad de la base de datos (Usuario, Rol, Destino, Reservacion) y funciones para CRUD.
+
+4. Views
+
+Archivos HTML/PHP que muestran contenido:
+
+header.php / footer.php → plantilla de cabecera y pie de página.
+
+home.php → listado de destinos destacados.
+
+login_form.php → formulario de login.
+
+reserva_form.php → formulario de reservación.
+
+listar_reservaciones.php → tabla de reservaciones.
+
+5. Assets
+
+CSS, imágenes y otros recursos estáticos.
+
+6. SQL
+
+schema.sql → Script de creación de todas las tablas con datos de ejemplo.
+
+✅ Notas:
+
+Esta estructura es compatible con InfinityFree, ya que todos los archivos PHP están en la raíz o en subcarpetas.
+
+MVC simple permite separar lógica (models/controllers) de presentación (views), aunque puedes mantener todo en archivos individuales si quieres máxima simplicidad.
+
+Los controllers son opcionales; si quieres, puedes poner la lógica directamente en guardar.php y login.php para agilizar el desarrollo.

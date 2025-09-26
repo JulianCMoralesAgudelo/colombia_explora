@@ -1,0 +1,81 @@
+                ┌─────────────┐
+                │  index.php  │
+                │  Inicio     │
+                └─────┬──────┘
+                      │
+       ┌──────────────┴───────────────┐
+       │                              │
+┌──────────────┐               ┌──────────────┐
+│ login.php    │               │ logout.php   │
+│ (Usuario/Admin)│             │ Cierra sesión │
+└─────┬────────┘               └──────────────┘
+      │
+      │ (POST) login → validar en DB
+      ▼
+┌──────────────┐
+│ index.php    │
+│ Banner + Destinos
+└─────┬────────┘
+      │
+      │ Usuario logueado
+      ▼
+┌──────────────┐
+│ reserva.php  │
+│ Formulario   │
+└─────┬────────┘
+      │ POST
+      ▼
+┌──────────────┐
+│ guardar.php  │
+│ Inserta en   │
+│ reservaciones│
+└─────┬────────┘
+      │ Redirige
+      ▼
+┌──────────────┐
+│ listar.php   │
+│ Tabla de     │
+│ reservaciones│
+└──────────────┘
+
+
+
+
+
+Detalles de navegación según roles
+Página	Acceso	Función principal
+index.php	Público / Logueado	Mostrar banner y destinos, botón reservar/login
+login.php	Público	Formulario login y redirección según rol
+logout.php	Logueado	Cierra sesión
+reserva.php	Usuario logueado	Formulario para crear reservación
+guardar.php	Usuario logueado	Procesa POST del formulario, inserta reservación
+listar.php	Logueado	Admin ve todas las reservaciones, usuario solo las suyas
+Flujo resumido
+
+Usuario no logueado:
+
+Ve index.php → puede hacer login o ver destinos
+
+Si intenta reserva.php o listar.php → redirige a login.php
+
+Usuario logueado (cliente):
+
+Ve index.php → botón “Reservar”
+
+Accede a reserva.php → llena formulario → envía a guardar.php
+
+guardar.php inserta datos → redirige a listar.php (solo sus reservaciones)
+
+Usuario logueado (admin):
+
+Accede a listar.php → ve todas las reservaciones de todos los usuarios
+
+Estilo visual aplicado
+
+Todas las páginas usan assets/css/styles.css
+
+Header y footer consistentes
+
+Colores pastel suaves para banner, tarjetas, formularios y tablas
+
+Botones destacados y legibles

@@ -1,0 +1,229 @@
+/* =========================
+   Reset básico
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+}
+
+/* =========================
+   Body y colores de fondo
+========================= */
+body {
+  background-color: #f8f9fa; /* fondo claro */
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+/* =========================
+   Header y navegación
+========================= */
+header {
+  background-color: #a8dadc; /* azul pastel */
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  display: inline-block;
+  color: #1d3557;
+  font-size: 28px;
+}
+
+nav {
+  display: inline-block;
+  float: right;
+}
+
+nav a {
+  text-decoration: none;
+  color: #1d3557;
+  margin-left: 15px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #457b9d;
+}
+
+/* =========================
+   Logo
+========================= */
+.logo {
+  height: 50px;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 15px; /* separación opcional con el nav */
+}
+
+/* =========================
+   Banner principal
+========================= */
+.banner {
+  background-color: #f1faee; /* verde muy suave */
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.banner h2 {
+  color: #457b9d;
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.banner a {
+  display: inline-block;
+  background-color: #ffb4a2; /* lila/rosa pastel */
+  color: #fff;
+  padding: 10px 25px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.banner a:hover {
+  background-color: #e76f51;
+}
+
+/* Banner principal con imagen */
+.banner-img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   Destinos (cards)
+========================= */
+.destinos {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.tarjeta {
+  background-color: #fefae0; /* amarillo pastel suave */
+  border-radius: 10px;
+  padding: 15px;
+  width: 300px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.tarjeta:hover {
+  transform: translateY(-5px);
+}
+
+.tarjeta h4 {
+  color: #1d3557;
+  margin-bottom: 8px;
+}
+
+.tarjeta p {
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.tarjeta a {
+  display: inline-block;
+  background-color: #a8dadc;
+  color: #1d3557;
+  padding: 5px 15px;
+  border-radius: 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.tarjeta a:hover {
+  background-color: #457b9d;
+  color: #fff;
+}
+
+/* Imagen de destino en las tarjetas */
+.destino-img {
+  width: 100%;
+  height: auto; /* <--- CAMBIA ESTO */
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   Formularios
+========================= */
+form {
+  background-color: #f1faee;
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: auto;
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+form input[type="submit"] {
+  background-color: #ffb4a2;
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+form input[type="submit"]:hover {
+  background-color: #e76f51;
+}
+
+/* =========================
+   Tablas
+========================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fefae0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #a8dadc;
+  color: #1d3557;
+}
+
+tr:nth-child(even) {
+  background-color: #f1faee;
+}
+
+/* =========================
+   Footer
+========================= */
+footer {
+  text-align: center;
+  margin-top: 30px;
+  color: #1d3557;
+}

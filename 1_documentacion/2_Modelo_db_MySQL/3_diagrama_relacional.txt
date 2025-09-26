@@ -1,0 +1,28 @@
+ROLES
+------
+PK: id_rol
+nombre_rol
+
+USUARIOS
+--------
+PK: id_usuario
+nombre
+correo
+password
+FK: rol -> ROLES.id_rol
+
+DESTINOS
+--------
+PK: id_destino
+ciudad
+hotel
+costo
+
+RESERVACIONES
+-------------
+PK: id_reservacion
+FK: id_usuario -> USUARIOS.id_usuario
+FK: id_destino -> DESTINOS.id_destino
+fecha_reserva
+numero_personas
+costo_total

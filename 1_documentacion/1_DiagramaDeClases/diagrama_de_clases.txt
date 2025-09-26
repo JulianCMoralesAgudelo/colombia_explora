@@ -1,0 +1,38 @@
++------------------+
+|      Rol         |
++------------------+
+| id_rol           |
+| nombre_rol       |
++------------------+
+
++------------------+
+|     Usuario      |
++------------------+
+| id_usuario       |
+| nombre           |
+| correo           |
+| password         |
+| rol (FK)         |
++------------------+
+| login()          |
++------------------+
+
++------------------+
+|     Destino      |
++------------------+
+| id_destino       |
+| ciudad           |
+| hotel            |
+| costo            |
++------------------+
+
++------------------+
+|  Reservacion     |
++------------------+
+| id_reservacion   |
+| id_usuario (FK)  |
+| id_destino (FK)  |
+| fecha_reserva    |
+| numero_personas  |
+| costo_total      |
++------------------+

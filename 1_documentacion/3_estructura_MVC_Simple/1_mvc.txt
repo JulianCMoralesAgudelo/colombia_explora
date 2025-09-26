@@ -1,0 +1,37 @@
+proyecto-turismo/
+│
+├─ index.php           # Página principal, muestra destinos destacados
+├─ login.php           # Formulario de login
+├─ logout.php          # Cierra sesión
+├─ reserva.php         # Formulario de reservación (solo usuarios autenticados)
+├─ guardar.php         # Procesa y guarda la reservación en BD
+├─ listar.php          # Muestra reservaciones (admin ve todas, usuario solo las suyas)
+├─ db.php              # Conexión segura a MySQL
+├─ session.php         # Manejo de sesiones (opcional, reusable)
+│
+├─ controllers/        # Controladores (opcional en MVC simple)
+│   ├─ UsuarioController.php
+│   └─ ReservacionController.php
+│
+├─ models/             # Modelos de datos
+│   ├─ Usuario.php
+│   ├─ Rol.php
+│   ├─ Destino.php
+│   └─ Reservacion.php
+│
+├─ views/              # Vistas HTML/PHP
+│   ├─ header.php
+│   ├─ footer.php
+│   ├─ home.php
+│   ├─ login_form.php
+│   ├─ reserva_form.php
+│   ├─ listar_reservaciones.php
+│
+├─ assets/             # Archivos estáticos
+│   ├─ css/
+│   │   └─ styles.css
+│   └─ img/
+│       └─ logo.png
+│
+└─ sql/
+    └─ schema.sql      # Script de creación de base de datos

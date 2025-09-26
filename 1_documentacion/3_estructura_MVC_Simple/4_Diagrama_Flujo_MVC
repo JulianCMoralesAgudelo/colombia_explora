@@ -1,0 +1,71 @@
+               ┌───────────────────┐
+               │       Usuario      │
+               │ (Cliente/Admin)    │
+               └─────────┬─────────┘
+                         │ Interactúa
+                         ▼
+               ┌───────────────────┐
+               │      Views         │
+               │------------------ │
+               │ home.php           │
+               │ login_form.php     │
+               │ reserva_form.php   │
+               │ listar_reservaciones.php │
+               └─────────┬─────────┘
+                         │ Solicita datos / Envía formularios
+                         ▼
+               ┌───────────────────┐
+               │   Controladores    │
+               │-------------------│
+               │ login.php          │
+               │ logout.php         │
+               │ reserva.php        │
+               │ guardar.php        │
+               │ listar.php         │
+               └─────────┬─────────┘
+                         │ Llama a funciones de los modelos
+                         ▼
+               ┌───────────────────┐
+               │      Models        │
+               │-------------------│
+               │ Usuario.php        │
+               │ Rol.php            │
+               │ Destino.php        │
+               │ Reservacion.php    │
+               └─────────┬─────────┘
+                         │ Consulta / Inserta / Actualiza / Borra
+                         ▼
+               ┌───────────────────┐
+               │    Base de Datos   │
+               │-------------------│
+               │ roles              │
+               │ usuarios           │
+               │ destinos           │
+               │ reservaciones      │
+               └───────────────────┘
+
+Explicación del flujo
+
+Usuario: Interactúa con el sitio mediante formularios y enlaces.
+
+Views: Muestran información al usuario y envían datos a los controladores.
+
+Controladores: Reciben solicitudes, validan sesión/rol y llaman a los modelos.
+
+Models: Ejecutan consultas a la base de datos (MySQL) y devuelven resultados al controlador.
+
+Base de datos: Contiene todas las tablas (roles, usuarios, destinos, reservaciones) y asegura integridad referencial.
+
+Notas visuales para presentación
+
+Cada bloque puede representarse con rectángulos modernos y colores pastel (azul, lila, verde suave).
+
+Flechas claras que muestran dirección de flujo:
+
+Usuario → Views → Controlador → Model → Base de Datos
+
+Resultados regresan: DB → Model → Controlador → View → Usuario
+
+Se pueden resaltar roles: cliente y admin con colores diferentes en el bloque Usuario.
+
+Footer o notas: indicar que el CSS aplicado mantiene consistencia en todas las views.

@@ -1,0 +1,31 @@
+Relaciones:
+Usuario 1:N Reservacion → un usuario puede tener muchas reservaciones
+Destino 1:N Reservacion → un destino puede ser reservado muchas veces
+Rol 1:N Usuario → un rol puede aplicarse a muchos usuarios
+
+Cardinalidad:
+Rol → Usuario → 1:N
+Usuario → Reservacion → 1:N
+Destino → Reservacion → 1:N
+
++---------+        +---------+       +-------------+
+|  Rol    | 1----N | Usuario | 1---N | Reservacion |
++---------+        +---------+       +-------------+
+| id_rol  |        | id_usuario|     | id_reservacion |
+| nombre  |        | nombre   |     | id_usuario (FK)|
++---------+        | correo   |     | id_destino (FK)|
+                   | password |     | fecha_reserva  |
+                   | rol (FK) |     | numero_personas|
+                   +---------+     | costo_total    |
+                                     +-------------+
+
++-------------+
+|  Destino    |
++-------------+
+| id_destino  |
+| ciudad      |
+| hotel       |
+| costo       |
++-------------+
+
+Destino 1 --- N Reservacion
