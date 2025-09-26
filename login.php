@@ -1,6 +1,6 @@
 <?php
 include 'db.php';
-include 'session.php'; // Ahora session_start() se maneja aquí
+include 'session.php'; // Incluimos el archivo que gestiona las sesiones
 $message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -38,6 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" name="password" placeholder="Contraseña" required>
         <input type="submit" value="Ingresar">
         <p style="color:red;"><?php echo htmlspecialchars($message); ?></p>
+        <hr>
+        <p>¿No tienes una cuenta? <a href="registro.php">Regístrate aquí</a></p>
     </form>
 </main>
 <?php include 'views/footer.php'; ?>
