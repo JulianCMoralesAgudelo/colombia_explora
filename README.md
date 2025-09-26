@@ -1,17 +1,66 @@
-# 🌐 Proyecto Web en InfinityFree – [Nombre del sector económico elegido]
+# 🌐 Proyecto Web en InfinityFree – **Colombia Explora (Turismo)**
 
 ## 👥 Integrantes y Roles
-- [Nombre completo] – Líder / Coordinador
-- [Nombre completo] – Desarrollador Backend
-- [Nombre completo] – Desarrollador Frontend / UI
-- [Nombre completo] – Administrador de Base de Datos (DBA)
-- [Nombre completo] – DevOps / Deployment
-- [Nombre completo] – QA / Tester
-- [Nombre completo] – Documentador / Presentador
+- **Jesús David Garcés Díaz** – Líder de Proyecto / Coordinador  
+- **Juan Sebastián Gómez Díaz** – Desarrollador Backend  
+- **Edwin Velásquez García** – Desarrollador Frontend / Diseñador UI  
+- **Julián Camilo Morales Agudelo** – Administrador de Base de Datos (DBA)  
+- **Robin Henao Botero** – DevOps / Especialista en Deployment  
+- **Darwin Minota Quinto** – QA / Tester  
 
 ## 📖 Descripción del Proyecto
-Breve explicación (3–5 líneas) del sitio web creado.  
-Ejemplo: *Este proyecto es un sitio web para el sector turístico, que permite registrar clientes y mensajes. Está desarrollado en PHP con base de datos MySQL y desplegado en InfinityFree.*
+**Colombia Explora** es una plataforma web enfocada en el sector **turismo**, cuyo objetivo es ofrecer a los usuarios una experiencia sencilla y confiable para:  
+
+- Explorar **lugares y destinos turísticos** en Colombia.  
+- **Registrarse** como usuarios para personalizar su experiencia.  
+- **Reservar y comprar** paquetes turísticos, hoteles y actividades.  
+
+La plataforma busca promover el turismo local, apoyar a prestadores de servicios turísticos y facilitar el acceso a experiencias únicas en distintas regiones del país.  
+
+## 📂 Estructura del Proyecto
+
+```bash
+.
+└── colombia_explora
+    ├── 1_documentacion/                # Documentación técnica y diagramas
+    │   ├── 1_DiagramaDeClases/         # Diagrama de clases del sistema
+    │   ├── 2_Modelo_db_MySQL/          # Modelo de la base de datos en MySQL
+    │   └── 3_estructura_MVC_Simple/    # Esquema MVC simplificado
+    │
+    ├── assets/                         # Archivos estáticos
+    │   ├── css/                        # Hojas de estilo
+    │   └── img/                        # Imágenes y recursos gráficos
+    │
+    ├── models/                         # Lógica de negocio (Modelos PHP)
+    │   ├── Destino.php
+    │   ├── Reservacion.php
+    │   ├── Rol.php
+    │   └── Usuario.php
+    │
+    ├── views/                          # Vistas (componentes de la interfaz)
+    │   ├── footer.php
+    │   ├── header.php
+    │   ├── home.php
+    │   ├── listar_reservaciones.php
+    │   ├── login_form.php
+    │   └── reserva_form.php
+    │
+    ├── sql/
+    │   └── schema.sql                  # Script de creación de base de datos
+    │
+    ├── db.php                           # Conexión principal a la base de datos
+    ├── db_w.php                          # Conexión alterna (escritura)
+    ├── guardar.php                       # Lógica para guardar datos
+    ├── index.php                          # Página principal
+    ├── listar.php                          # Listado general de datos
+    ├── login.php                           # Controlador de inicio de sesión
+    ├── logout.php                          # Cierre de sesión
+    ├── registro.php                        # Registro de nuevos usuarios
+    ├── reserva.php                          # Procesamiento de reservas
+    ├── session.php                          # Manejo de sesiones
+    └── README.md                            # Documentación del proyecto
+
+```
 
 ## 🚀 Instrucciones de Uso
 1. Subir los archivos a la carpeta `htdocs` o `public_html` en InfinityFree.  
@@ -36,12 +85,12 @@ Ejemplo: *Este proyecto es un sitio web para el sector turístico, que permite r
 - Carpeta `capturas/` – Evidencias gráficas  
 
 ## 📝 Changelog (registro de cambios)
-- [Nombre] – Implementó validaciones y seguridad con prepared statements.  
-- [Nombre] – Mejoró la interfaz y organizó assets en carpeta `static/`.  
-- [Nombre] – Configuró la base de datos y generó `dump.sql`.  
-- [Nombre] – Subió el proyecto al hosting InfinityFree.  
-- [Nombre] – Realizó pruebas QA y documentó resultados.  
-- [Nombre] – Redactó README.md y preparó presentación.  
+- **Jesús David Garcés Díaz** – Implementó validaciones y seguridad con prepared statements.  
+- **Julián Camilo Morales Agudelo** – Mejoró la interfaz y organizó assets en carpeta `static/`.  
+- **Edwin Velásquez García** – Configuró la base de datos y generó `dump.sql`.  
+- **Robin Henao Botero** – Subió el proyecto al hosting InfinityFree.  
+- **Darwin Minota Quinto** – Realizó pruebas QA y documentó resultados.  
+- **Juan Sebastián Gómez Díaz** – Redactó README.md y preparó presentación.  
 
 ## ❓ Preguntas de Reflexión (Cloud)
 1. ¿Qué es despliegue y cómo lo hicieron en este proyecto?  
