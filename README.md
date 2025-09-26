@@ -65,15 +65,15 @@ La plataforma busca promover el turismo local, apoyar a prestadores de servicios
 ## 🚀 Instrucciones de Uso
 1. Subir los archivos a la carpeta `htdocs` o `public_html` en InfinityFree.  
 2. Configurar la conexión en `db_connect.php` con:
-   - Host: `sqlXXX.epizy.com`
-   - Usuario: `[usuario asignado]`
-   - Contraseña: `[contraseña asignada]`
-   - Nombre de la base de datos: `[db asignada]`
+   - Host: `sql301.infinityfree.com`
+   - Usuario: `usuario if0_40028034`
+   - Contraseña: `VpJWwsC9KnQwBx`
+   - Nombre de la base de datos: `if0_40028034_viajes`
 3. Ingresar al sitio desde la URL pública:  
-   👉 [Pegar aquí el enlace de su sitio en InfinityFree]
+   👉 [enlace](https://colombiaexplora.page.gd/)
 
 ## 🖼️ Evidencias de Despliegue
-- URL del sitio: [enlace]
+- URL del sitio: [enlace](https://colombiaexplora.page.gd/)
 - Captura de phpMyAdmin mostrando ≥3 registros (`capturas/phpmyadmin.png`)  
 - Captura del File Manager con archivos subidos (`capturas/filemanager.png`)  
 - Captura del sitio funcionando (`capturas/sitio.png`)
