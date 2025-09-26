@@ -93,20 +93,25 @@ La plataforma busca promover el turismo local, apoyar a prestadores de servicios
 - **Juan Sebastián Gómez Díaz** – Redactó README.md y preparó presentación.  
 
 ## ❓ Preguntas de Reflexión (Cloud)
-1. ¿Qué es despliegue y cómo lo hicieron en este proyecto?  
-   > Respuesta aquí  
 
-2. ¿Qué limitaciones encontraron en InfinityFree?  
-   > Respuesta aquí  
+1. **¿Qué es despliegue y cómo lo hicieron en este proyecto?**  
+   > El despliegue es publicar la aplicación para que otros puedan usarla.  
+   > En este proyecto subimos los archivos al hosting gratuito de **InfinityFree** usando su administrador de archivos y configuramos la base de datos MySQL desde el panel.
 
-3. ¿Qué servicio equivalente usarían en AWS, Azure o GCP para:  
-   - Archivos estáticos  
-   - Base de datos  
-   - Hosting del sitio  
-   > Respuesta aquí  
+2. **¿Qué limitaciones encontraron en InfinityFree?**  
+   > Tiene poco espacio, no permite conexiones externas a la base de datos y es más lento al cargar. Además, no soporta algunas librerías de PHP.
 
-4. ¿Cómo resolverían escalabilidad y alta disponibilidad en la nube?  
-   > Respuesta aquí  
+3. **¿Qué servicio equivalente usarían en AWS, Azure o GCP para:**  
+   - **Archivos estáticos:** S3 (AWS), Blob Storage (Azure), Cloud Storage (GCP)  
+   - **Base de datos:** RDS (AWS), Azure Database for MySQL, Cloud SQL (GCP)  
+   - **Hosting del sitio:** EC2 (AWS), App Service (Azure), Compute Engine (GCP)
 
-5. Plan de migración en 4–5 pasos desde InfinityFree hacia un servicio en la nube.  
-   > Respuesta aquí  
+4. **¿Cómo resolverían escalabilidad y alta disponibilidad en la nube?**  
+   > Usando balanceadores de carga, más instancias de la app según la demanda y bases de datos replicadas para evitar caídas.
+
+5. **Plan de migración en 4–5 pasos desde InfinityFree hacia un servicio en la nube.**  
+   > 1. Respaldar los archivos y la base de datos.  
+   > 2. Crear el entorno en la nube (máquina, base de datos y almacenamiento).  
+   > 3. Configurar las variables y subir los archivos al nuevo hosting.  
+   > 4. Importar la base de datos y probar el sitio.  
+   > 5. Actualizar el dominio y monitorear el rendimiento.
