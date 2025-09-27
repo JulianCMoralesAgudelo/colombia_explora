@@ -15,7 +15,7 @@ if (!ctype_digit($id)) {
 
 $id = (int) $id;
 
-// Preparar sentencia SQL
+// Preparar sentencia SQL OJO MODIFICAR LA QUERY SI SE LLAMA DIFETENTE LA BASE DE DATOS
 $stmt = $conn->prepare("DELETE FROM colombia_explora.reservaciones WHERE id_reservacion = ?");
 if (!$stmt) {
     die("Error en prepare: " . $conn->error);

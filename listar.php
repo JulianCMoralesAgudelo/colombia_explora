@@ -57,9 +57,8 @@ if (isAdmin()) {
                         <td><?php echo htmlspecialchars($row['fecha_reserva']); ?></td>
                         <td><?php echo htmlspecialchars($row['numero_personas']); ?></td>
                         <td>$<?php echo htmlspecialchars($row['costo_total']); ?></td>
-                        <td><a href="modificar.php?id=<?php echo htmlspecialchars($row['id_reservacion']); ?>">Modificar</a></td>
-                        <td><a href="eliminar.php?id=<?php echo htmlspecialchars($row['id_reservacion']); ?>"onclick="return confirm('¿Estás seguro de que deseas eliminar esta reservación?');">Eliminar</a></td>
-                    </tr>
+                        <td><a class="btn-modificar" href="modificar.php?id=<?php echo htmlspecialchars($row['id_reservacion']); ?>">Modificar</a></td>
+                        <td><a class="btn-eliminar" href="eliminar.php?id=<?php echo htmlspecialchars($row['id_reservacion']); ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar esta reservación?');">Eliminar</a></td></tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
