@@ -38,8 +38,8 @@ CREATE TABLE IF NOT EXISTS destinos (
 -- Insertar destinos de ejemplo
 INSERT INTO destinos (ciudad, hotel, costo) VALUES
 ('Cartagena','Hotel Caribe',200.00),
-('Medellín','Hotel Plaza',150.00),
-('Bogotá','Hotel Real',180.00);
+('Medellin','Hotel Plaza',150.00),
+('Bogota','Hotel Real',180.00);
 
 -- -----------------------------------------------------
 -- Tabla Reservaciones
