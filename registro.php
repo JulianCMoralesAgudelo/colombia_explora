@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message = "Este correo ya está registrado.";
         } else {
             // 5. Insertar el nuevo usuario con rol 'cliente'
-            $rol = 1;
+            $rol = 2;
             $stmt = $conn->prepare("INSERT INTO usuarios (nombre, correo, password, rol) VALUES (?, ?, ?, ?)");
             $stmt->bind_param("ssss", $nombre, $correo, $hash_password, $rol);
 
