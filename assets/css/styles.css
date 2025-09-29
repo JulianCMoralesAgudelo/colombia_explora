@@ -208,15 +208,57 @@ th,
 td {
   padding: 12px;
   text-align: left;
+  vertical-align: middle;
+}
+
+/* Celdas de acciones centradas */
+td:nth-last-child(-n+2) {
+  text-align: center;
 }
 
 th {
   background-color: #a8dadc;
   color: #1d3557;
+  font-weight: bold;
 }
 
 tr:nth-child(even) {
   background-color: #f1faee;
+}
+
+/* Hover en filas de tabla */
+tbody tr:hover {
+  background-color: #e8f4f8;
+  transition: background-color 0.2s ease;
+}
+
+/* =========================
+   Mensajes de alerta
+========================= */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+.alert-info {
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+  color: #0c5460;
 }
 
 /* =========================
@@ -228,33 +270,36 @@ footer {
   color: #1d3557;
 }
 
+/* =========================
+   Botones de acción en tablas
+========================= */
 .btn-modificar,
 .btn-eliminar {
     display: inline-block;
-    padding: 6px 12px;
-    border-radius: 8px;
+    padding: 5px 10px;
+    border-radius: 4px;
     text-decoration: none;
-    font-weight: bold;
-    font-size: 0.9rem;
-    transition: background-color 0.2s ease, transform 0.1s ease;
+    font-size: 12px;
+    color: white;
+    border: none;
 }
 
 /* Botón Modificar */
 .btn-modificar {
     background-color: #007bff;
-    color: white;
 }
+
 .btn-modificar:hover {
     background-color: #0056b3;
-    transform: scale(1.05);
+    color: white;
 }
 
 /* Botón Eliminar */
 .btn-eliminar {
     background-color: #dc3545;
-    color: white;
 }
+
 .btn-eliminar:hover {
-    background-color: #a71d2a;
-    transform: scale(1.05);
+    background-color: #c82333;
+    color: white;
 }

@@ -1,4 +1,7 @@
 <?php
+// Configurar codificación UTF-8
+header('Content-Type: text/html; charset=utf-8');
+
 // modificar.php
 include 'db.php';
 include 'session.php';

@@ -1,4 +1,7 @@
 <?php
+// Configurar codificación UTF-8
+header('Content-Type: text/html; charset=utf-8');
+
 include 'db.php';
 include 'session.php';
 checkLogin();
@@ -34,6 +37,38 @@ if (isAdmin()) {
 <?php include 'views/header.php'; ?>
 <main>
     <h2>Lista de Reservaciones</h2>
+    
+    <?php
+    // Mostrar mensajes de éxito o error
+    if (isset($_GET['mensaje'])) {
+        if ($_GET['mensaje'] == 'eliminado') {
+            echo '<div class="alert alert-success">Reservación eliminada exitosamente.</div>';
+        }
+    }
+    
+    if (isset($_GET['error'])) {
+        $error = $_GET['error'];
+        $mensaje_error = '';
+        switch($error) {
+            case 'no_id':
+                $mensaje_error = 'ID de reservación no especificado.';
+                break;
+            case 'id_invalido':
+                $mensaje_error = 'ID de reservación inválido.';
+                break;
+            case 'no_encontrado':
+                $mensaje_error = 'Reservación no encontrada o no tienes permisos para eliminarla.';
+                break;
+            case 'eliminar_error':
+                $mensaje_error = 'Error al eliminar la reservación.';
+                break;
+            default:
+                $mensaje_error = 'Error desconocido.';
+        }
+        echo '<div class="alert alert-error">' . htmlspecialchars($mensaje_error) . '</div>';
+    }
+    ?>
+    
     <?php if ($reservaciones && $reservaciones->num_rows > 0): ?>
         <table>
             <thead>

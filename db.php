@@ -28,5 +28,9 @@ if ($conn->connect_error) {
     exit();
 }
 
-// Establecer codificación UTF-8
+// Establecer codificación UTF-8 
 $conn->set_charset("utf8mb4");
+
+// Configuración adicional para UTF-8
+$conn->query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
+$conn->query("SET CHARACTER SET utf8mb4");
