@@ -1,6 +1,6 @@
 <?php
 include 'db.php';
-include 'session.php'; // Incluimos el archivo que gestiona las sesiones
+include 'session.php';
 $message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -28,18 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = "Correo o contraseña incorrectos";
     }
 }
-?>
 
-<?php include 'views/header.php'; ?>
-<main>
-    <form method="POST" action="">
-        <h2>Login</h2>
-        <input type="email" name="correo" placeholder="Correo" required>
-        <input type="password" name="password" placeholder="Contraseña" required>
-        <input type="submit" value="Ingresar">
-        <p style="color:red;"><?php echo htmlspecialchars($message); ?></p>
-        <hr>
-        <p>¿No tienes una cuenta? <a href="registro.php">Regístrate aquí</a></p>
-    </form>
-</main>
-<?php include 'views/footer.php'; ?>
+// Aquí solo incluyes la vista
+include 'views/login_form.php';

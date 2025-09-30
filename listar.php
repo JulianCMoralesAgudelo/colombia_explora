@@ -93,10 +93,17 @@ if (isAdmin()) {
                         <td><?php echo htmlspecialchars($row['numero_personas']); ?></td>
                         <td>$<?php echo htmlspecialchars($row['costo_total']); ?></td>
                         <td><a class="btn-modificar" href="modificar.php?id=<?php echo htmlspecialchars($row['id_reservacion']); ?>">Modificar</a></td>
-                        <td><a class="btn-eliminar" href="eliminar.php?id=<?php echo htmlspecialchars($row['id_reservacion']); ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar esta reservación?');">Eliminar</a></td></tr>
+                        <td><a class="btn-eliminar" href="eliminar.php?id=<?php echo htmlspecialchars($row['id_reservacion']); ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar esta reservación?');">Eliminar</a></td>
+                    </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
+
+        <!-- Botón de exportación CSV -->
+        <form method="POST" action="exportar_csv.php" style="margin-top:15px;">
+            <input type="submit" value="Exportar CSV">
+        </form>
+
     <?php else: ?>
         <p>No hay reservaciones para mostrar.</p>
     <?php endif; ?>

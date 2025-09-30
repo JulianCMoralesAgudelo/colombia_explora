@@ -4,19 +4,20 @@
 // ====================
 
 // Para Docker/entorno local
+/*
 $host = "db";       // o "127.0.0.1"
 $user = "root";
 $pass = "rootDB*";
 $db   = "viajes";
-
-/*
-// Para InfinityFree (o cualquier otro hosting)
-$host = "sqlXXX.epizy.com";
-$user = "tu_usuario";
-$pass = "tu_password";
-$db   = "nombre_bd";
 */
 
+// Para InfinityFree (producción)
+$host = "sql210.infinityfree.com";   // Host de MySQL en InfinityFree
+$user = "if0_40055273";              // Usuario MySQL
+$pass = "GDzWtOaoU2z5h";             // Contraseña
+$db   = "if0_40055273_viajes";       // Nombre de la base de datos
+
+// Crear conexión
 $conn = new mysqli($host, $user, $pass, $db);
 
 // Verificar conexión
