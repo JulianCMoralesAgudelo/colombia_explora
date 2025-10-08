@@ -3,19 +3,10 @@
 // Configuración de conexión a MySQL
 // ====================
 
-// Para Docker/entorno local
-/*
-$host = "db";       // o "127.0.0.1"
-$user = "root";
-$pass = "rootDB*";
-$db   = "viajes";
-*/
-
-// Para InfinityFree (producción)
-$host = "sql210.infinityfree.com";   // Host de MySQL en InfinityFree
-$user = "if0_40055273";              // Usuario MySQL
-$pass = "GDzWtOaoU2z5h";             // Contraseña
-$db   = "if0_40055273_viajes";       // Nombre de la base de datos
+$host = $_ENV['DB_HOST'];
+$user = $_ENV['DB_USER'];
+$pass = $_ENV['DB_PASS'];
+$db   = $_ENV['DB_NAME'];
 
 // Crear conexión
 $conn = new mysqli($host, $user, $pass, $db);
