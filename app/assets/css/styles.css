@@ -1,0 +1,310 @@
+/* =========================
+   Reset básico
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+}
+
+/* =========================
+   Body y colores de fondo
+========================= */
+body {
+  background-color: #f8f9fa; /* fondo claro */
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+/* =========================
+   Header y navegación
+========================= */
+header {
+  background-color: #a8dadc; /* azul pastel */
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  display: inline-block;
+  color: #1d3557;
+  font-size: 28px;
+}
+
+nav {
+  display: inline-block;
+  float: right;
+}
+
+nav a {
+  text-decoration: none;
+  color: #1d3557;
+  margin-left: 15px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #457b9d;
+}
+
+/* =========================
+   Logo
+========================= */
+.logo {
+  height: 50px;
+  width: auto;
+  display: block;
+  margin: 0 auto; /* centra el logo */
+}
+
+/* =========================
+   Banner principal
+========================= */
+.banner {
+  background-color: #f1faee; /* verde muy suave */
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.banner h2 {
+  color: #457b9d;
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.banner a {
+  display: inline-block;
+  background-color: #ffb4a2; /* lila/rosa pastel */
+  color: #fff;
+  padding: 10px 25px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.banner a:hover {
+  background-color: #e76f51;
+}
+
+/* Banner principal con imagen */
+.banner-img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   Destinos (cards)
+========================= */
+.destinos {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  justify-content: center; /* centra las tarjetas horizontalmente */
+}
+
+.tarjeta {
+  background-color: #fefae0; /* amarillo pastel suave */
+  border-radius: 10px;
+  padding: 15px;
+  width: 300px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  text-align: center; /* centra todo el contenido dentro */
+}
+
+.tarjeta:hover {
+  transform: translateY(-5px);
+}
+
+.tarjeta h4 {
+  color: #1d3557;
+  margin-bottom: 8px;
+}
+
+.tarjeta p {
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.tarjeta a {
+  display: inline-block;
+  background-color: #a8dadc;
+  color: #1d3557;
+  padding: 5px 15px;
+  border-radius: 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.tarjeta a:hover {
+  background-color: #457b9d;
+  color: #fff;
+}
+
+/* Imagen de destino en las tarjetas */
+.destino-img {
+  display: block;
+  margin: 0 auto 10px auto; /* centra horizontal */
+  max-width: 250px;         /* límite de ancho */
+  height: auto;             /* mantiene proporción */
+  border-radius: 8px;
+}
+
+/* =========================
+   Formularios
+========================= */
+form {
+  background-color: #f1faee;
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: auto;
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+form input[type="submit"] {
+  background-color: #ffb4a2;
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+form input[type="submit"]:hover {
+  background-color: #e76f51;
+}
+
+/* =========================
+   Tablas
+========================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fefae0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* Celdas de acciones centradas */
+td:nth-last-child(-n+2) {
+  text-align: center;
+}
+
+th {
+  background-color: #a8dadc;
+  color: #1d3557;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f1faee;
+}
+
+/* Hover en filas de tabla */
+tbody tr:hover {
+  background-color: #e8f4f8;
+  transition: background-color 0.2s ease;
+}
+
+/* =========================
+   Mensajes de alerta
+========================= */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+.alert-info {
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+  color: #0c5460;
+}
+
+/* =========================
+   Footer
+========================= */
+footer {
+  text-align: center;
+  margin-top: 30px;
+  color: #1d3557;
+}
+
+/* =========================
+   Botones de acción en tablas
+========================= */
+.btn-modificar,
+.btn-eliminar {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 12px;
+    color: white;
+    border: none;
+}
+
+/* Botón Modificar */
+.btn-modificar {
+    background-color: #007bff;
+}
+
+.btn-modificar:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+/* Botón Eliminar */
+.btn-eliminar {
+    background-color: #dc3545;
+}
+
+.btn-eliminar:hover {
+    background-color: #c82333;
+    color: white;
+}
