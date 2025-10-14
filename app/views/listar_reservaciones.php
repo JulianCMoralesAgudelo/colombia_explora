@@ -21,6 +21,9 @@ $reservaciones = $reservacionModel->getReservacionesByUsuario($_SESSION['id_usua
 
 <div class="main-container">
     <section class="modern-banner">
+    <div style="text-align: center; margin-bottom: 1rem;">
+        <a href="/exportar_csv.php" class="btn-modificar" style="background: linear-gradient(135deg, #10b981, #059669);">📊 Exportar a CSV</a>
+    </div>
         <h2>🎯 Mis Reservaciones</h2>
         <p>Gestiona todas tus reservas de viaje en un solo lugar</p>
     </section>

@@ -4,7 +4,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 // 1. INCLUSIONES
 include 'db.php';
-include_once include 'models/Reservacion.php';
+include_once 'models/Reservacion.php';
 // CORRECCIÓN: Usar la ruta correcta para el archivo compartido
 include __DIR__ . '/../shared/session.php'; 
 
@@ -34,10 +34,18 @@ $output = fopen("php://output", "w");
 // Escribir encabezados de columnas (Asegúrate de que el orden coincida con la consulta SQL)
 fputcsv($output, ['ID', 'Usuario', 'Ciudad', 'Hotel', 'Fecha Reserva', 'Personas', 'Costo Total']);
 
-// 4. GENERAR FILAS
+// 4. GENERAR FILAS CON MEJOR FORMATO
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        fputcsv($output, $row);
+        fputcsv($output, [
+            $row['id_reservacion'],
+            $row['usuario'],
+            $row['ciudad'], 
+            $row['hotel'],
+            $row['fecha_reserva'],
+            $row['numero_personas'],
+            '$' . number_format($row['costo_total'], 0, ',', '.')
+        ]);
     }
 }
 
