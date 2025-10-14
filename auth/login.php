@@ -198,6 +198,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 1.5rem;
         }
 
         .login-link {
@@ -211,6 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .login-link:hover {
             color: #764ba2;
+            text-decoration: underline;
         }
 
         .login-link::after {
@@ -294,6 +297,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="login-links-modern">
             <a href="forgot_password.php" class="login-link">¿Olvidaste tu contraseña?</a>
             <a href="registro.php" class="login-link">¿No tienes cuenta? Regístrate aquí</a>
+            <a href="http://192.168.1.100:8080/index.php" class="login-link">🏠 Volver al Inicio</a>
         </div>
     </div>
 </div>
