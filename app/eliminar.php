@@ -2,56 +2,56 @@
 // Configurar codificación UTF-8
 header('Content-Type: text/html; charset=utf-8');
 
+// 1. INCLUSIONES
 include 'db.php';
-include 'session.php';
+include_once include 'models/Reservacion.php';
+// CORRECCIÓN: Usar la ruta correcta para el archivo compartido
+include __DIR__ . '/../shared/session.php'; 
 
-// Verificar que el usuario esté logueado
-checkLogin();
+// 2. SEGURIDAD BÁSICA Y VERIFICACIÓN DE SESIÓN
+checkLogin(); 
 
 if (!isset($_GET['id'])) {
-    header("Location: listar.php?error=no_id");
+    header("Location: views/listar_reservaciones.php?error=no_id");
     exit();
 }
 
-$id = $_GET['id'];
+$id_reserva = $_GET['id'];
 
 // Validar que el ID sea numérico
-if (!ctype_digit($id)) {
-    header("Location: listar.php?error=id_invalido");
+if (!ctype_digit($id_reserva)) {
+    header("Location: views/listar_reservaciones.php?error=id_invalido");
     exit();
 }
 
-$id = (int) $id;
+$id_reserva = (int) $id_reserva;
 $id_usuario = $_SESSION['id_usuario'];
 
-// Verificar permisos: Admin puede eliminar cualquier reservación, usuario solo las suyas
+// Instanciar Modelo
+$reservacionModel = new Reservacion($conn);
+
+// 3. LÓGICA MVC Y CONTROL DE ACCESO
+// isAdmin() se define en shared/session.php, lo cual es correcto.
+
 if (isAdmin()) {
-    // Admin puede eliminar cualquier reservación
-    $stmt = $conn->prepare("DELETE FROM reservaciones WHERE id_reservacion = ?");
-    $stmt->bind_param("i", $id);
+    // Admin: Puede eliminar cualquier reserva. Pasamos el ID de usuario como 0 o null para indicar bypass de verificación.
+    $deleted_rows = $reservacionModel->deleteReservacion($id_reserva, 0); 
 } else {
-    // Usuario solo puede eliminar sus propias reservaciones
-    $stmt = $conn->prepare("DELETE FROM reservaciones WHERE id_reservacion = ? AND id_usuario = ?");
-    $stmt->bind_param("ii", $id, $id_usuario);
+    // Usuario: Solo puede eliminar su propia reserva.
+    $deleted_rows = $reservacionModel->deleteReservacion($id_reserva, $id_usuario);
 }
 
-if (!$stmt) {
-    header("Location: listar.php?error=prepare_error");
-    exit();
-}
-
-// Ejecutar la eliminación
-if ($stmt->execute()) {
-    if ($stmt->affected_rows > 0) {
-        header("Location: listar.php?mensaje=eliminado");
-    } else {
-        header("Location: listar.php?error=no_encontrado");
-    }
+// 4. MANEJO DE RESULTADOS
+if ($deleted_rows === false) {
+    // Error de ejecución de la consulta
+    header("Location: views/listar_reservaciones.php?error=eliminar_error");
+} elseif ($deleted_rows > 0) {
+    // Eliminación exitosa
+    header("Location: views/listar_reservaciones.php?mensaje=eliminado");
 } else {
-    header("Location: listar.php?error=eliminar_error");
+    // No se encontró la reserva O el usuario intentó borrar la reserva de otro.
+    header("Location: views/listar_reservaciones.php?error=no_encontrado");
 }
 
-$stmt->close();
 $conn->close();
 exit();
-?>

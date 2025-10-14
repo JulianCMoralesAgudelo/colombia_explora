@@ -1,9 +1,14 @@
 <?php
+// Incluir la conexión a DB
 include 'db.php';
-include 'session.php'; // Incluimos session.php para tener acceso a las funciones de sesión
+// Incluir el modelo Usuario (Controlador MVC)
+include 'models/Usuario.php'; 
+// Incluir el manejador de sesión compartido
+include __DIR__ . '/../shared/session.php'; 
 
 // La variable $message se usará para mostrar mensajes de éxito o error.
 $message = '';
+$usuarioModel = new Usuario($conn);
 
 // Verificamos si la solicitud es de tipo POST (es decir, el formulario fue enviado)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -21,32 +26,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($password) < 6) {
         $message = "La contraseña debe tener al menos 6 caracteres.";
     } else {
-        // 3. Hashear la contraseña de forma segura
-        $hash_password = password_hash($password, PASSWORD_DEFAULT);
+        // Lógica MVC: Verificar si el correo ya existe en la base de datos
+        $result = $usuarioModel->getUsuarioByCorreo($correo);
         
-        // 4. Verificar si el correo ya existe en la base de datos
-        $stmt = $conn->prepare("SELECT id_usuario FROM usuarios WHERE correo = ?");
-        $stmt->bind_param("s", $correo);
-        $stmt->execute();
-        $stmt->store_result();
-        
-        if ($stmt->num_rows > 0) {
+        if ($result->num_rows > 0) {
             $message = "Este correo ya está registrado.";
         } else {
-            // 5. Insertar el nuevo usuario con rol 'cliente'
-            $rol = 2;
-            $stmt = $conn->prepare("INSERT INTO usuarios (nombre, correo, password, rol) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("ssss", $nombre, $correo, $hash_password, $rol);
+            // 3. Hashear la contraseña de forma segura
+            $hash_password = password_hash($password, PASSWORD_DEFAULT);
+            
+            // 4. Lógica MVC: Insertar el nuevo usuario.
+            $success = $usuarioModel->createUsuario($nombre, $correo, $hash_password);
 
-            if ($stmt->execute()) {
-                // Registro exitoso, redirigimos al login o a la página principal
+            if ($success) {
+                // Registro exitoso, redirigimos al login
                 header("Location: login.php?success=registered");
                 exit();
             } else {
-                $message = "Error al registrar el usuario: " . $conn->error;
+                $message = "Error al registrar el usuario.";
             }
         }
-        $stmt->close();
     }
 }
 ?>
@@ -55,8 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <main>
     <form method="POST" action="">
         <h2>Registro de Usuario</h2>
-        <input type="text" name="nombre" placeholder="Nombre completo" required>
-        <input type="email" name="correo" placeholder="Correo electrónico" required>
+        <input type="text" name="nombre" placeholder="Nombre completo" value="<?php echo htmlspecialchars($nombre ?? ''); ?>" required>
+        <input type="email" name="correo" placeholder="Correo electrónico" value="<?php echo htmlspecialchars($correo ?? ''); ?>" required>
         <input type="password" name="password" placeholder="Contraseña" required>
         <input type="password" name="confirm_password" placeholder="Confirmar contraseña" required>
         <input type="submit" value="Registrarse">

@@ -1,27 +1,44 @@
 <?php
+// Incluir la conexión a DB
 include 'db.php';
+// Incluir el modelo Usuario (para guardar el token y verificar el correo)
+include 'models/Usuario.php'; 
 
-// URL base de tu sitio (ajusta aquí si cambias de dominio)
-$APP_URL = "https://colombiaViaja.page.gd";
+// URL base de tu sitio (se deja para la construcción del email, aunque la lógica del controlador es lo importante)
+$APP_URL = "http://192.168.1.100:8082"; // Usamos la URL del contenedor auth para los enlaces internos.
+$message = '';
+
+// Instanciar el modelo Usuario
+$usuarioModel = new Usuario($conn);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $correo = trim($_POST['correo']);
 
-    // Generar token único y fecha de expiración (30 min)
-    $token = bin2hex(random_bytes(32));
-    $expires = date("Y-m-d H:i:s", strtotime("+30 minutes"));
+    // 1. MVC: Verificar que el correo exista antes de generar el token (Opcional, pero mejor para seguridad)
+    $result = $usuarioModel->getUsuarioByCorreo($correo);
+    
+    if ($result->num_rows === 0) {
+        // Por seguridad, siempre es mejor no informar si el correo existe o no,
+        // pero para debug y UX, mostraremos un mensaje genérico.
+        $message = "Si la dirección de correo electrónico es correcta, recibirás un enlace para restablecer tu contraseña.";
+    } else {
+        // 2. MVC: Generar y Guardar token en el modelo
+        // El modelo se encargará de generar el token, la expiración y la inserción segura.
+        $token = $usuarioModel->createPasswordResetToken($correo);
 
-    // Guardar en la tabla de reseteo de contraseñas
-    $stmt = $conn->prepare("INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $correo, $token, $expires);
-    $stmt->execute();
+        if ($token) {
+            // 3. Construir enlace con tu dominio
+            $link = $APP_URL . "/reset_password.php?token=" . urlencode($token);
 
-    // Construir enlace con tu dominio
-    $link = $APP_URL . "/reset_password.php?token=" . urlencode($token);
+            // Aquí debería ir la lógica de envío de correo
+            // Por ahora, para testing, mostramos el mensaje.
+            $message = "Se ha enviado un enlace para restablecer tu contraseña a **" . htmlspecialchars($correo) . "**.";
+            $message .= "<br><br>DEBUG ENLACE: <a href='" . htmlspecialchars($link) . "'>Haz clic aquí para restablecer</a>";
 
-    // Aquí deberías enviar el correo real con mail() o PHPMailer
-    // Por ahora solo mostramos el enlace en pantalla
-    echo "Se envió un enlace a tu correo: <a href='$link'>$link</a>";
+        } else {
+             $message = "Ocurrió un error al generar el token. Inténtalo de nuevo.";
+        }
+    }
 }
 ?>
 
@@ -29,4 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h2>Recuperar contraseña</h2>
     <input type="email" name="correo" placeholder="Correo" required>
     <input type="submit" value="Enviar enlace">
+    <?php if (!empty($message)): ?>
+        <p><?php echo $message; ?></p>
+    <?php endif; ?>
 </form>

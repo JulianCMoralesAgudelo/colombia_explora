@@ -3,6 +3,9 @@
 <main>
     <form method="POST" action="login.php">
         <h2>Login</h2>
+        
+        <input type="hidden" name="redirect_to" value="<?php echo htmlspecialchars($redirect_to); ?>">
+
         <input type="email" name="correo" placeholder="Correo" required>
         <input type="password" name="password" placeholder="Contraseña" required>
         <input type="submit" value="Ingresar">

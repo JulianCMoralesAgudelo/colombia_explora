@@ -2,101 +2,105 @@
 // Configurar codificación UTF-8
 header('Content-Type: text/html; charset=utf-8');
 
-// modificar.php
+// 1. INCLUSIONES
 include 'db.php';
-include 'session.php';
+// Incluir Modelos
+include_once include 'models/Reservacion.php'; 
+include 'models/Destino.php';
+// CORRECCIÓN: Usar la ruta correcta para el archivo compartido
+include __DIR__ . '/../shared/session.php'; 
 
 checkLogin();
 
+// Instanciar Modelos
+$reservacionModel = new Reservacion($conn);
+$destinoModel = new Destino($conn);
+
+// Redireccion por defecto (corregida a views/listar_reservaciones.php)
+$listar_url = "views/listar_reservaciones.php";
+
 // Validar ID en GET
 if (!isset($_GET['id']) || !ctype_digit($_GET['id'])) {
-    header("Location: listar.php?mensaje=id_invalido");
+    header("Location: {$listar_url}?mensaje=id_invalido");
     exit();
 }
-$id = (int) $_GET['id'];
+$id_reserva = (int) $_GET['id'];
+$id_usuario = $_SESSION['id_usuario'];
+$is_admin = isAdmin();
 
-// Si envían el formulario (POST) procesamos la actualización
+// --- LÓGICA POST (ACTUALIZACIÓN) ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fecha_reserva   = trim($_POST['fecha_reserva'] ?? '');
     $numero_personas = trim($_POST['numero_personas'] ?? '');
 
     // Validaciones básicas
     if ($fecha_reserva === '' || !ctype_digit($numero_personas) || (int)$numero_personas <= 0) {
-        header("Location: modificar.php?id={$id}&error=datos_invalidos");
+        header("Location: modificar.php?id={$id_reserva}&error=datos_invalidos");
         exit();
     }
     $numero_personas = (int) $numero_personas;
 
-    // Obtener costo por persona desde la tabla destinos (relacionada a la reservación)
-    $stmt = $conn->prepare(
-        "SELECT d.costo 
-         FROM reservaciones r
-         JOIN destinos d ON r.id_destino = d.id_destino
-         WHERE r.id_reservacion = ?"
-    );
-    if (!$stmt) {
-        header("Location: listar.php?mensaje=error_db");
-        exit();
-    }
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    if ($res->num_rows === 0) {
-        $stmt->close();
-        header("Location: listar.php?mensaje=reservacion_no_encontrada");
-        exit();
-    }
-    $row = $res->fetch_assoc();
-    $costo_por_persona = (float) $row['costo'];
-    $stmt->close();
+    // 1. MVC: Obtener datos actuales de la reserva para verificar el propietario y el id_destino
+    $res = $reservacionModel->getReservacionFullDataById($id_reserva); // Asumo este método existe o lo crearemos
+    $reserva_actual = $res->fetch_assoc();
 
-    // Calcular costo_total en servidor (no confiar en lo que envía el cliente)
+    if (!$reserva_actual) {
+        header("Location: {$listar_url}?mensaje=reservacion_no_encontrada");
+        exit();
+    }
+
+    // 2. SEGURIDAD: Verificar que el usuario tenga permiso para modificar
+    if (!$is_admin && $reserva_actual['id_usuario'] !== $id_usuario) {
+        // Si no es admin y no es su reserva
+        header("Location: {$listar_url}?error=permiso_denegado");
+        exit();
+    }
+
+    // 3. Lógica de Negocio/MVC: Recalcular costo total
+    $id_destino = $reserva_actual['id_destino'];
+    $destino_res = $destinoModel->getDestinoById($id_destino);
+    $destino_data = $destino_res->fetch_assoc();
+    
+    $costo_por_persona = (float) $destino_data['costo'];
     $costo_total = $numero_personas * $costo_por_persona;
-
-    // Actualizar la reservación
-    $stmt2 = $conn->prepare(
-        "UPDATE reservaciones 
-         SET fecha_reserva = ?, numero_personas = ?, costo_total = ?
-         WHERE id_reservacion = ?"
+    
+    // 4. MVC: Actualizar la reservación
+    $success = $reservacionModel->updateReservacion(
+        $id_reserva, 
+        $fecha_reserva, 
+        $numero_personas, 
+        $costo_total
     );
-    if (!$stmt2) {
-        header("Location: modificar.php?id={$id}&error=prepare_fail");
-        exit();
-    }
-    $stmt2->bind_param("sidi", $fecha_reserva, $numero_personas, $costo_total, $id);
 
-    if ($stmt2->execute()) {
-        $stmt2->close();
-        header("Location: listar.php?mensaje=modificado");
+    if ($success) {
+        header("Location: {$listar_url}?mensaje=modificado");
         exit();
     } else {
-        $stmt2->close();
-        header("Location: modificar.php?id={$id}&error=update_fail");
+        header("Location: modificar.php?id={$id_reserva}&error=update_fail");
         exit();
     }
 }
 
-// Si NO es POST: obtener datos actuales para mostrar el formulario
-$stmt = $conn->prepare(
-    "SELECT r.fecha_reserva, r.numero_personas, r.costo_total, d.costo AS costo_por_persona
-     FROM reservaciones r
-     JOIN destinos d ON r.id_destino = d.id_destino
-     WHERE r.id_reservacion = ?"
-);
-if (!$stmt) {
-    header("Location: listar.php?mensaje=error_db");
+// --- LÓGICA GET (MOSTRAR FORMULARIO) ---
+
+// 1. MVC: Obtener datos actuales de la reserva para mostrar en el formulario
+$res = $reservacionModel->getReservacionFullDataById($id_reserva); // Asumo este método existe o lo crearemos
+$reservacion = $res->fetch_assoc();
+
+if (!$reservacion) {
+    header("Location: {$listar_url}?mensaje=reservacion_no_encontrada");
     exit();
 }
-$stmt->bind_param("i", $id);
-$stmt->execute();
-$result = $stmt->get_result();
-if ($result->num_rows === 0) {
-    $stmt->close();
-    header("Location: listar.php?mensaje=reservacion_no_encontrada");
+
+// 2. SEGURIDAD: Verificar que el usuario tenga permiso para ver/modificar
+if (!$is_admin && $reservacion['id_usuario'] !== $id_usuario) {
+    // Si no es admin y no es su reserva
+    header("Location: {$listar_url}?error=permiso_denegado");
     exit();
 }
-$reservacion = $result->fetch_assoc();
-$stmt->close();
+
+// Nota: Para la vista modificar_reserva.php, la variable $reservacion debe contener todos los campos necesarios.
+
 $conn->close();
 
 // Incluir la vista (archivo que contiene el formulario)

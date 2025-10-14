@@ -1,46 +1,85 @@
--- ==========================================
--- Schema para "Viajes Colombia" - InfinityFree
--- ==========================================
+-- =====================================================
+-- BASE DE DATOS: VIAJES COLOMBIA
+-- =====================================================
+CREATE DATABASE IF NOT EXISTS viajes CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE viajes;
 
--- -----------------------------------------------------
--- Tabla Roles
--- -----------------------------------------------------
+-- =====================================================
+-- TABLA: ROLES
+-- =====================================================
 CREATE TABLE IF NOT EXISTS roles (
-    id_rol INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_rol VARCHAR(50) NOT NULL
+  id_rol INT AUTO_INCREMENT PRIMARY KEY,
+  nombre_rol VARCHAR(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Insertar roles por defecto
-INSERT INTO roles (nombre_rol) VALUES ('admin'), ('cliente');
-
--- -----------------------------------------------------
--- Tabla Usuarios
--- -----------------------------------------------------
+-- =====================================================
+-- TABLA: USUARIOS
+-- =====================================================
 CREATE TABLE IF NOT EXISTS usuarios (
-    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    correo VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL, -- para hash seguro
-    rol INT NOT NULL,
-    FOREIGN KEY (rol) REFERENCES roles(id_rol) ON DELETE RESTRICT ON UPDATE CASCADE
+  id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  correo VARCHAR(120) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  id_rol INT DEFAULT 2,
+  FOREIGN KEY (id_rol) REFERENCES roles(id_rol)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- -----------------------------------------------------
--- Tabla password_resets
--- -----------------------------------------------------
-CREATE TABLE password_resets (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
-    token VARCHAR(64) NOT NULL,
-    expires_at DATETIME NOT NULL,
-    INDEX (email),
-    INDEX (token)
-);
--- -----------------------------------------------------
--- Insertar usuario admin de ejemplo
--- -----------------------------------------------------
--- Nota: la contraseña se guarda en hash (ejemplo: hash de "admin123")
-INSERT INTO usuarios (nombre, correo, password, rol) VALUES
-('Administrador', 'admin@viajescolombia.com', 
-'$2y$10$uJXw6vYp3dI1G6Qhr3w9COx1ZTPQjR5yG5R9f5c7nI6fZQH9yFq6e', 1);
+-- =====================================================
+-- TABLA: DESTINOS
+-- =====================================================
+CREATE TABLE IF NOT EXISTS destinos (
+  id_destino INT AUTO_INCREMENT PRIMARY KEY,
+  ciudad VARCHAR(100) NOT NULL,
+  hotel VARCHAR(100) NOT NULL,
+  costo DECIMAL(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- =====================================================
+-- TABLA: RESERVACIONES
+-- =====================================================
+CREATE TABLE IF NOT EXISTS reservaciones (
+  id_reservacion INT AUTO_INCREMENT PRIMARY KEY,
+  id_usuario INT NOT NULL,
+  id_destino INT NOT NULL,
+  fecha_reserva DATE NOT NULL,
+  numero_personas INT NOT NULL,
+  costo_total DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
+  FOREIGN KEY (id_destino) REFERENCES destinos(id_destino)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- =====================================================
+-- INSERTAR DATOS BASE
+-- =====================================================
+INSERT INTO roles (nombre_rol) VALUES 
+('admin'), 
+('usuario');
+
+INSERT INTO destinos (ciudad, hotel, costo) VALUES
+('Medellin', 'Hotel Poblado Plaza', 350000.00),
+('Bogota', 'Hotel Tequendama', 400000.00),
+('Cartagena', 'Hotel Caribe', 550000.00);
+
+-- =====================================================
+-- TABLAS DE AUTENTICACIÓN / CONTACTO
+-- =====================================================
+
+-- Contactos / mensajes enviados desde formulario
+CREATE TABLE IF NOT EXISTS mensajes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre    VARCHAR(100)  NOT NULL,
+  correo    VARCHAR(120)  NOT NULL,
+  telefono  VARCHAR(30)   NULL,
+  categoria VARCHAR(40)   NULL,
+  mensaje   TEXT          NOT NULL,
+  fecha     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Usuarios del módulo auth (se puede vincular con la tabla principal)
+CREATE TABLE IF NOT EXISTS usuarios_auth (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  usuario VARCHAR(80) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  rol VARCHAR(30) DEFAULT 'usuario',
+  fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
