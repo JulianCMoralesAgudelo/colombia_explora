@@ -1,67 +1,117 @@
 <?php
-// Incluir la conexión a DB
 include 'db.php';
-// Incluir el modelo Usuario (Controlador MVC)
-include 'models/Usuario.php'; 
-// Incluir el manejador de sesión compartido
-include __DIR__ . '/../shared/session.php'; 
+include 'models/Usuario.php';
 
-// La variable $message se usará para mostrar mensajes de éxito o error.
-$message = '';
-$usuarioModel = new Usuario($conn);
+$mensaje = '';
+$error = '';
 
-// Verificamos si la solicitud es de tipo POST (es decir, el formulario fue enviado)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // 1. Sanear y validar las entradas del formulario para evitar ataques
-    $nombre = htmlspecialchars(trim($_POST['nombre']));
-    $correo = filter_var(trim($_POST['correo']), FILTER_VALIDATE_EMAIL);
-    $password = $_POST['password'];
-    $confirm_password = $_POST['confirm_password'];
-
-    // 2. Realizar validaciones básicas en el servidor
-    if (!$correo) {
-        $message = "El correo electrónico no es válido.";
-    } elseif ($password !== $confirm_password) {
-        $message = "Las contraseñas no coinciden.";
-    } elseif (strlen($password) < 6) {
-        $message = "La contraseña debe tener al menos 6 caracteres.";
+    $nombre = trim($_POST['nombre']);
+    $correo = trim($_POST['correo']);
+    $contrasena = $_POST['contrasena'];
+    $confirmar_contrasena = $_POST['confirmar_contrasena'];
+    
+    // Validaciones básicas
+    if (empty($nombre) || empty($correo) || empty($contrasena)) {
+        $error = "Todos los campos son obligatorios.";
+    } elseif ($contrasena !== $confirmar_contrasena) {
+        $error = "Las contraseñas no coinciden.";
+    } elseif (strlen($contrasena) < 6) {
+        $error = "La contraseña debe tener al menos 6 caracteres.";
     } else {
-        // Lógica MVC: Verificar si el correo ya existe en la base de datos
-        $result = $usuarioModel->getUsuarioByCorreo($correo);
+        $usuarioModel = new Usuario($conn);
         
-        if ($result->num_rows > 0) {
-            $message = "Este correo ya está registrado.";
+        // ✅ CORREGIDO: getUsuarioByCorreo devuelve array, no mysqli_result
+        $usuarioExistente = $usuarioModel->getUsuarioByCorreo($correo);
+        
+        if ($usuarioExistente) {
+            $error = "El correo electrónico ya está registrado.";
         } else {
-            // 3. Hashear la contraseña de forma segura
-            $hash_password = password_hash($password, PASSWORD_DEFAULT);
-            
-            // 4. Lógica MVC: Insertar el nuevo usuario.
+            // Crear nuevo usuario
+            $hash_password = password_hash($contrasena, PASSWORD_DEFAULT);
             $success = $usuarioModel->createUsuario($nombre, $correo, $hash_password);
-
+            
             if ($success) {
-                // Registro exitoso, redirigimos al login
-                header("Location: login.php?success=registered");
-                exit();
+                $mensaje = "✅ Registro exitoso. Ahora puedes iniciar sesión.";
+                // Redirigir después de 2 segundos
+                header("Refresh: 2; URL=login.php");
             } else {
-                $message = "Error al registrar el usuario.";
+                $error = "❌ Error al crear el usuario. Inténtalo de nuevo.";
             }
         }
     }
 }
 ?>
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Viajes Colombia</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
 <?php include 'views/header.php'; ?>
-<main>
-    <form method="POST" action="">
-        <h2>Registro de Usuario</h2>
-        <input type="text" name="nombre" placeholder="Nombre completo" value="<?php echo htmlspecialchars($nombre ?? ''); ?>" required>
-        <input type="email" name="correo" placeholder="Correo electrónico" value="<?php echo htmlspecialchars($correo ?? ''); ?>" required>
-        <input type="password" name="password" placeholder="Contraseña" required>
-        <input type="password" name="confirm_password" placeholder="Confirmar contraseña" required>
-        <input type="submit" value="Registrarse">
-        <p style="color:red;"><?php echo htmlspecialchars($message); ?></p>
-        <hr>
-        <p>¿Ya tienes una cuenta? <a href="login.php">Inicia sesión</a></p>
-    </form>
-</main>
+
+<div class="main-container">
+    <div class="login-container">
+        <div class="login-card">
+            <h2 class="login-title">👤 Crear Cuenta</h2>
+            
+            <?php if ($error): ?>
+                <div class="alert alert-error">
+                    <?php echo $error; ?>
+                </div>
+            <?php endif; ?>
+            
+            <?php if ($mensaje): ?>
+                <div class="alert alert-success">
+                    <?php echo $mensaje; ?>
+                </div>
+            <?php endif; ?>
+
+            <form method="POST" class="login-form">
+                <div class="form-group">
+                    <label for="nombre">👤 Nombre Completo:</label>
+                    <input type="text" id="nombre" name="nombre" 
+                           placeholder="Tu nombre completo" 
+                           value="<?php echo htmlspecialchars($_POST['nombre'] ?? ''); ?>" 
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="correo">📧 Correo Electrónico:</label>
+                    <input type="email" id="correo" name="correo" 
+                           placeholder="tu@email.com" 
+                           value="<?php echo htmlspecialchars($_POST['correo'] ?? ''); ?>" 
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contrasena">🔒 Contraseña:</label>
+                    <input type="password" id="contrasena" name="contrasena" 
+                           placeholder="Mínimo 6 caracteres" 
+                           minlength="6" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmar_contrasena">🔒 Confirmar Contraseña:</label>
+                    <input type="password" id="confirmar_contrasena" name="confirmar_contrasena" 
+                           placeholder="Repite tu contraseña" 
+                           minlength="6" required>
+                </div>
+
+                <button type="submit" class="login-btn-large">🚀 Registrarse</button>
+            </form>
+
+            <div class="login-links">
+                <a href="login.php">¿Ya tienes cuenta? Inicia Sesión</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php include 'views/footer.php'; ?>
+</body>
+</html>

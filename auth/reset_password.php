@@ -1,43 +1,104 @@
 <?php
 include 'db.php';
-// Incluir el modelo Usuario (para la lógica de tokens)
-include 'models/Usuario.php'; 
+include 'models/Usuario.php';
 
-// Instanciar el modelo
+$message = '';
+$error = '';
+$token = $_GET['token'] ?? '';
+
+// Instanciar modelo
 $usuarioModel = new Usuario($conn);
 
-$token = $_GET['token'] ?? '';
-$error_message = '';
-$correo = ''; // Variable para almacenar el correo si el token es válido
+// Verificar token válido
+$tokenData = $usuarioModel->validatePasswordResetToken($token);
 
-// 1. MVC: Usar el modelo para buscar y validar el token
-$row = $usuarioModel->validatePasswordResetToken($token);
-
-// 2. Validar el resultado del modelo
-if (!$row) {
-    // El modelo devuelve false si el token es inválido o expirado.
-    $error_message = "Token inválido o expirado. Por favor, solicita un nuevo enlace de recuperación.";
-} else {
-    // Token válido. Guardamos el correo y borramos el error.
-    $correo = htmlspecialchars($row['email']);
-}
-
-// Si hay un error, detenemos la ejecución y mostramos el mensaje.
-if (!empty($error_message)) {
-    // Puedes incluir una vista de error aquí si la tienes
-    die("<h2>Error</h2><p>" . $error_message . "</p>");
+if (!$tokenData) {
+    $error = "El enlace de recuperación es inválido o ha expirado.";
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nueva_contrasena = $_POST['nueva_contrasena'];
+    $confirmar_contrasena = $_POST['confirmar_contrasena'];
+    
+    // Validar que las contraseñas coincidan
+    if ($nueva_contrasena !== $confirmar_contrasena) {
+        $error = "Las contraseñas no coinciden.";
+    } elseif (strlen($nueva_contrasena) < 6) {
+        $error = "La contraseña debe tener al menos 6 caracteres.";
+    } else {
+        // Actualizar contraseña
+        $success = $usuarioModel->updatePassword($tokenData['email'], $nueva_contrasena);
+        
+        if ($success) {
+            // Eliminar token usado
+            $usuarioModel->deletePasswordResetToken($token);
+            $message = "✅ Contraseña actualizada correctamente. Ahora puedes iniciar sesión.";
+        } else {
+            $error = "❌ Error al actualizar la contraseña. Inténtalo de nuevo.";
+        }
+    }
 }
 ?>
 
-<h2>Restablecer contraseña</h2>
-<form method="POST" action="save_new_password.php">
-    <input type="hidden" name="correo" value="<?php echo $correo; ?>">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Contraseña - Viajes Colombia</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+<?php include 'views/header.php'; ?>
 
-    <label>Nueva contraseña:</label><br>
-    <input type="password" name="password" placeholder="Nueva contraseña" required><br><br>
-    
-    <label>Confirmar contraseña:</label><br>
-    <input type="password" name="confirm_password" placeholder="Confirmar contraseña" required><br><br>
+<div class="main-container">
+    <div class="login-container">
+        <div class="login-card">
+            <h2 class="login-title">🔐 Nueva Contraseña</h2>
+            
+            <?php if ($error): ?>
+                <div class="alert alert-error">
+                    <?php echo $error; ?>
+                </div>
+            <?php endif; ?>
+            
+            <?php if ($message): ?>
+                <div class="alert alert-success">
+                    <?php echo $message; ?>
+                    <br><br>
+                    <a href="login.php" class="login-btn-large">Iniciar Sesión</a>
+                </div>
+            <?php elseif ($tokenData): ?>
+                <form method="POST" class="login-form">
+                    <div class="form-group">
+                        <label for="nueva_contrasena">🔒 Nueva Contraseña:</label>
+                        <input type="password" id="nueva_contrasena" name="nueva_contrasena" 
+                               placeholder="Mínimo 6 caracteres" 
+                               minlength="6" required>
+                    </div>
 
-    <input type="submit" value="Guardar">
-</form>
+                    <div class="form-group">
+                        <label for="confirmar_contrasena">🔒 Confirmar Contraseña:</label>
+                        <input type="password" id="confirmar_contrasena" name="confirmar_contrasena" 
+                               placeholder="Repite la contraseña" 
+                               minlength="6" required>
+                    </div>
+
+                    <button type="submit" class="login-btn-large">🔄 Cambiar Contraseña</button>
+                </form>
+            <?php else: ?>
+                <div class="alert alert-error">
+                    <?php echo $error; ?>
+                    <br><br>
+                    <a href="forgot_password.php" class="login-btn-large">Solicitar nuevo enlace</a>
+                </div>
+            <?php endif; ?>
+
+            <div class="login-links">
+                <a href="login.php">← Volver al Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php include 'views/footer.php'; ?>
+</body>
+</html>

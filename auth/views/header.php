@@ -19,7 +19,7 @@ if (!defined('AUTH_BASE_URL')) {
             <h1 class="brand-title">Viajes Colombia</h1>
         </div>
         <nav class="modern-nav">
-            <a href="/index.php" class="nav-link">Inicio</a>
+            <a href="http://192.168.1.100:8080/index.php" class="nav-link">Inicio</a>
             <?php if(isset($_SESSION['id_usuario'])): ?>
                 <a href="/reserva.php" class="nav-link">Reservar</a>
                 <a href="/views/listar_reservaciones.php" class="nav-link">Mis Reservaciones</a>
