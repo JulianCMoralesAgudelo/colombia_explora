@@ -4,7 +4,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 // 1. INCLUSIONES
 include 'db.php';
-include_once include 'models/Reservacion.php';
+include_once 'models/Reservacion.php';
 // CORRECCIÓN: Usar la ruta correcta para el archivo compartido
 include __DIR__ . '/../shared/session.php'; 
 

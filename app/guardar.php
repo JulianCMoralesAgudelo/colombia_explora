@@ -7,7 +7,7 @@ header('Content-Type: text/html; charset=utf-8');
 include 'db.php';
 // Incluir Modelos necesarios
 include 'models/Destino.php';
-include_once include 'models/Reservacion.php';
+include 'models/Reservacion.php';
 // Incluir el manejador de sesión compartido con la ruta correcta
 include __DIR__ . '/../shared/session.php';
 
@@ -49,12 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $usuario_id,
         $destino_id,
         $fecha_reserva,
-        $num_personas, // Campo num_personas añadido por el schema.sql
+        $num_personas,
         $costo_total
     );
 
     if ($success) {
-        // ✅ CORRECCIÓN: Redireccionar a la ruta correcta
+        // Redireccionar a la lista de reservaciones
         header("Location: views/listar_reservaciones.php?success=true");
         exit();
     } else {
@@ -63,3 +63,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 }
+?>

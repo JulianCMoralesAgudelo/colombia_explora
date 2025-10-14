@@ -2,9 +2,9 @@
 // Configurar codificación UTF-8
 header('Content-Type: text/html; charset=utf-8');
 
-// Incluir archivos necesarios
-include __DIR__ . '/../db.php';
-include_once include __DIR__ . '/../models/Reservacion.php';
+// Includes corregidos
+include_once __DIR__ . '/../db.php';
+include_once __DIR__ . '/../models/Reservacion.php';
 include __DIR__ . '/../../shared/session.php';
 
 // Verificar autenticación
