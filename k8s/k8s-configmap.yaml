@@ -1,0 +1,18 @@
+# =========================================================
+# 1. CONFIGMAP: Variables de Entorno y Conexión
+# =========================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: viajes-colombia-config
+  # Usamos el namespace predeterminado, pero podrías usar 'viajes-colombia'
+data:
+  # Variables de Conexión a la Base de Datos (tomadas de docker-compose.yml)
+  DB_HOST: "db-service" # Nombre del servicio K8s de la DB
+  DB_USER: "root"
+  DB_PASS: "rootDB*"
+  DB_NAME: "viajes"
+  
+  # Variables de Configuración de la Aplicación
+  AUTH_BASE_URL: "http://auth-service" # Usamos el nombre del Service K8s interno
+  TZ: "America/Bogota"

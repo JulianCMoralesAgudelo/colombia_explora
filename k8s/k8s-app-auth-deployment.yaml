@@ -1,0 +1,88 @@
+# =========================================================
+# 3. APP y AUTH: Despliegues con Solución de Sesión Compartida
+# =========================================================
+
+# 1. Deployment para el Servicio AUTH (8082)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+  labels:
+    app: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      # === CONFIGURACIÓN DE VOLÚMENES COMPARTIDOS ===
+      volumes:
+        - name: session-storage # Define el volumen EmptyDir (temporal compartido)
+          emptyDir: {}
+      initContainers:
+        # Init Container: Ejecuta el CHOWN antes de iniciar el servidor web.
+        # Esto soluciona el problema de permisos entre el host y el volumen compartido.
+        - name: fix-permissions
+          image: busybox:latest
+          command: ["sh", "-c", "chown -R 33:33 /shared/sessions"] # 33 es el UID/GID de www-data en PHP-Apache
+          volumeMounts:
+            - name: session-storage
+              mountPath: /shared/sessions
+      # === FIN CONFIGURACIÓN DE VOLÚMENES ===
+      containers:
+        - name: auth-web
+          image: tu-imagen-auth:latest # <-- ¡IMPORTANTE! Reemplaza con tu imagen real
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: session-storage # Monta el volumen EmptyDir para guardar sesiones
+              mountPath: /shared/sessions
+          envFrom:
+            - configMapRef:
+                name: viajes-colombia-config # Carga variables de conexión y AUTH_BASE_URL
+---
+# 2. Deployment para el Servicio APP (8080)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: web
+spec:
+  replicas: 2 # Configuramos 2 réplicas para el servicio principal
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      # === CONFIGURACIÓN DE VOLÚMENES COMPARTIDOS ===
+      volumes:
+        - name: session-storage # Define el mismo volumen EmptyDir
+          emptyDir: {}
+      initContainers:
+        # Init Container: Asegura los permisos también en este Pod (aunque EmptyDir lo facilita)
+        - name: fix-permissions
+          image: busybox:latest
+          command: ["sh", "-c", "chown -R 33:33 /shared/sessions"]
+          volumeMounts:
+            - name: session-storage
+              mountPath: /shared/sessions
+      # === FIN CONFIGURACIÓN DE VOLÚMENES ===
+      containers:
+        - name: app-web
+          image: tu-imagen-app:latest # <-- ¡IMPORTANTE! Reemplaza con tu imagen real
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: session-storage # Monta el volumen EmptyDir para leer sesiones
+              mountPath: /shared/sessions
+          envFrom:
+            - configMapRef:
+                name: viajes-colombia-config

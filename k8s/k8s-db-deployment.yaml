@@ -1,0 +1,50 @@
+# =========================================================
+# 2. BASE DE DATOS: Despliegue y PVC
+# =========================================================
+
+# 1. Persistent Volume Claim (PVC)
+# Define el almacenamiento persistente para los datos de MySQL.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi 
+---
+# 2. Deployment de MySQL
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+  labels:
+    app: mysql
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          ports:
+            - containerPort: 3306
+          envFrom:
+            - configMapRef: # Cargamos todas las variables del ConfigMap
+                name: viajes-colombia-config
+          volumeMounts:
+            # Montamos el PVC en el directorio de datos de MySQL
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: db-pvc
