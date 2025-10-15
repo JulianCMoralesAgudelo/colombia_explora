@@ -26,7 +26,7 @@ session_set_cookie_params([
 ]);
 
 // Definir la URL base para el contenedor de autenticación (AUTH)
-define('AUTH_BASE_URL', getenv('AUTH_BASE_URL') ?: 'http://192.168.1.100:8082');
+define('AUTH_BASE_URL', getenv('AUTH_BASE_URL') ?: 'http://localhost:8082');
 
 // 3. Iniciar sesión. Usamos @session_start() para prevenir el error 'Headers already sent'.
 if (@session_status() === PHP_SESSION_NONE) {

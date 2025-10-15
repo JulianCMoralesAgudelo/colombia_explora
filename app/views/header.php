@@ -1,6 +1,6 @@
 <?php
 if (!defined('AUTH_BASE_URL')) {
-    define('AUTH_BASE_URL', 'http://192.168.1.100:8082');
+    define('AUTH_BASE_URL', 'http://localhost:8082');
 }
 ?>
 <!DOCTYPE html>

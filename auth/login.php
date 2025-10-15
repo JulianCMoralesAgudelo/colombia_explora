@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['rol'] = $usuario['id_rol'];
         
         // Redirigir a la página principal
-        header("Location: http://192.168.1.100:8080/index.php");
+        header("Location: http://localhost:8080/index.php");
         exit();
     } else {
         // Login fallido
@@ -297,7 +297,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="login-links-modern">
             <a href="forgot_password.php" class="login-link">¿Olvidaste tu contraseña?</a>
             <a href="registro.php" class="login-link">¿No tienes cuenta? Regístrate aquí</a>
-            <a href="http://192.168.1.100:8080/index.php" class="login-link">🏠 Volver al Inicio</a>
+            <a href="http://localhost:8080/index.php" class="login-link">🏠 Volver al Inicio</a>
         </div>
     </div>
 </div>

@@ -5,7 +5,7 @@ include 'db.php';
 include 'models/Usuario.php'; 
 
 // URL base de tu sitio
-$APP_URL = "http://192.168.1.100:8082";
+$APP_URL = "http://localhost:8082";
 $message = '';
 
 // Instanciar el modelo Usuario

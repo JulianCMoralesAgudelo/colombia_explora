@@ -338,7 +338,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="login-links-modern">
             <a href="login.php" class="login-link">¿Ya tienes cuenta? Inicia Sesión</a>
-            <a href="http://192.168.1.100:8080/index.php" class="login-link">🏠 Volver al Inicio</a>
+            <a href="http://localhost:8080/index.php" class="login-link">🏠 Volver al Inicio</a>
         </div>
     </div>
 </div>
